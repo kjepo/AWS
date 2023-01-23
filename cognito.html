@@ -11,8 +11,6 @@
     <button id="upload-button">Upload to S3</button>
     <div id="results"></div>
     <script type="text/javascript">
-    // https://stackoverflow.com/questions/11240127/uploading-image-to-amazon-s3-with-html-javascript-jquery-with-ajax-request-n
-    // https://www.youtube.com/watch?v=dRAT5wT8xoE
     AWS.config.region = 'eu-west-2'; // 1. Enter your region
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: "eu-west-2:2081718f-8d70-4232-bf1f-96ae07275530" // 3. Your pool ID
