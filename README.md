@@ -4,7 +4,7 @@ This memo, dated 2023-01-23, describes the steps I had to take
 to setup a file uploader to an Amazon S3 bucket.  Bear in mind
 that all links presented below may have changed when you read
 this, but the text should hopefully guide you to the right page
-amongst Amazon's 32058242 pages.
+(amongst Amazon's 32058242 pages).
 
 ## Register an account
 
@@ -15,17 +15,18 @@ https://aws.amazon.com
 
 ## Create a bucket
 
-After you're logged in, go to "S3" so you can "Buckets" in the left-hand column:
+After you're logged in, go to "S3" so you can see "Buckets" in the left-hand column:
 ```
 https://s3.console.aws.amazon.com/s3/buckets
 ```
 followed by an argument which describes your region - in my case `eu-north-1`.
+
 However,
 I want my bucket to be in `eu-west-2` (closer to my clients).
 
-Now click "Create bucket": give it a name (lowercase),
-choose the region which is closest
-to you or your clients and disable ACL (access control lists).
+Now click "Create bucket" and give it a name (lowercase),
+choose the region which is closest to you or your clients
+and disable ACL (access control lists).
 Under "Block all public access" I found that I had to block everything except
 "Block public access to buckets and objects granted through new access control lists".
 
@@ -86,7 +87,7 @@ In the same tab, edit the "Bucket policy":
     ]
 }
 ```
-where BUCKETNAME again is the name of your bucket.
+where "BUCKETNAME" again is the name of your bucket.
 
 ## Object ownership
 
@@ -121,7 +122,7 @@ In the same tab, enter the following CORS settings:
 ]
 ```
 Here you should replace `https://example.com` with the domain from which
-you will be hosting your script (shown furher down).  You can enter more
+you will be hosting your script (shown further down).  You can enter more
 than one domain here, or none at all.  Bear in mind that it's easy for
 someone to spoof your address so this is not as secure as you may think.
 
@@ -151,9 +152,8 @@ your identity pool name.  You will use it next.
 
 ## IAM
 
-Another wonderful acronym
-(apparently it stands for "Identity and Access Management")
-which controls access rights to the bucket is IAM.
+Yet another wonderful acronym.  (Apparently it stands for "Identity and Access Management".)
+This one controls access rights to the bucket.
 Go to "Services", "All services" and "IAM".
 Then, in the left column, choose "Roles".
 In the list of roles, choose the unauthenticated role's name from
@@ -183,6 +183,7 @@ Then click on "Review policy" and "Save changes".
 ## Javascript program
 
 Still with me?  Fantastic!  Now let's write the actual program.
+This HTML-file with some javascript will let you upload one or more files to the bucket.
 In the code below you will need to change (1), (2) and (3).
 
 ```
