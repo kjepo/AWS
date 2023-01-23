@@ -202,7 +202,7 @@ In the code below you will need to change (1), (2) and (3).
     <script type="text/javascript">
     AWS.config.region = 'eu-west-2'; // 1. Enter your region
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: "eu-west-2:2081718f-8d70-4232-bf1f-96ae07275530" // 3. Your pool ID
+        IdentityPoolId: "eu-west-2:2081718f-8d70-4232-bf1f-xxxxxxxxxxxx" // 3. Your pool ID
     });
 
     AWS.config.credentials.get(function(err) {
@@ -213,7 +213,7 @@ In the code below you will need to change (1), (2) and (3).
 
     var bucket = new AWS.S3({
         params: {
-            Bucket: 'folio-rad'	// 2. Replace with your bucket name
+            Bucket: 'BUCKETNAME'  // 2. Replace with your bucket name
         }
     });
     var fileChooser = document.getElementById('file-chooser');
