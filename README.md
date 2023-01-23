@@ -188,58 +188,41 @@ In the code below you will need to change (1), (2) and (3).
 ```
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>AWS S3 File Upload</title>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
 </head>
+
 <body>
-    <input type="file" id="file-chooser" />
+    <input type="file" id="file-chooser" multiple />
     <button id="upload-button">Upload to S3</button>
     <div id="results"></div>
     <script type="text/javascript">
+    // https://stackoverflow.com/questions/11240127/uploading-image-to-amazon-s3-with-html-javascript-jquery-with-ajax-request-n
+    // https://www.youtube.com/watch?v=dRAT5wT8xoE
     AWS.config.region = 'eu-west-2'; // 1. Enter your region
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: "eu-west-2:2081718f-8d70-4232-bf1f-xxxxxxxxxxxx" // 2. Your Pool ID
+        IdentityPoolId: "eu-west-2:2081718f-8d70-4232-bf1f-xxxxxxxxxxxx" // 3. Your pool ID
     });
+
     AWS.config.credentials.get(function(err) {
         if (err)
-            alert(err);
+	    alert(err);
+        console.log(AWS.config.credentials);
     });
-    var bucketName = 'BUCKETNAME'; // 3. Enter your bucket name here
+
     var bucket = new AWS.S3({
         params: {
-            Bucket: bucketName
+            Bucket: 'BUCKETNAME'  // 2. Replace with your bucket name
         }
     });
     var fileChooser = document.getElementById('file-chooser');
     var button = document.getElementById('upload-button');
     var results = document.getElementById('results');
-    button.addEventListener('click', function() {
-        var file = fileChooser.files[0];
-        if (file) {
-            results.innerHTML = '';
-            var objKey = file.name;
-            var params = {
-                Key: objKey,
-                ContentType: file.type,
-                Body: file,
-                ACL: 'public-read'
-            };
-            bucket.putObject(params, function(err, data) {
-                if (err) {
-                    results.innerHTML = 'ERROR: ' + err;
-                } else {
-                    // This function will list all the files which has been uploaded            
-                    listObjs(); 
-                    // Here you can also add your code to update your database
-                }
-            });
-        } else {
-            results.innerHTML = 'Nothing to upload.';
-        }
-    }, false);
+
     function listObjs() {
-        var prefix = '';
+        var prefix = ''; 	  // this can be a user ID or project ID
         bucket.listObjects({
             Prefix: prefix
         }, function(err, data) {
@@ -254,6 +237,34 @@ In the code below you will need to change (1), (2) and (3).
             }
         });
     }
+
+    function upload(file) {
+	if (!file)
+	    return;
+        results.innerHTML = '';
+        var objKey = file.name;
+        var params = {
+            Key: objKey,
+            ContentType: file.type,
+            Body: file,
+            ACL: 'public-read'
+        };
+        bucket.putObject(params, function(err, data) {
+            if (err) {
+                results.innerHTML = 'ERROR: ' + err;
+            } else {
+		listObjs(); // list all uploaded files
+                // Here you can also add your code to update your database
+            }
+        });
+    }
+
+    button.addEventListener('click', function() {
+        var files = fileChooser.files;
+	for (var i = 0; i < files.length; i++)
+	    upload(files[i]);
+    }, false);
+
     </script>
 </body>
 </html>
